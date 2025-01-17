@@ -34,4 +34,4 @@
 ## Установка
 1. Склонируйие репозиторий: git clone https://github.com/AleksandrZaec/notifications_service.git
 2. В корне проекта создайте файл .env и заполните его по образцу env_example
-3. Для запуска проекта с помощью докера используйте команду docker-compos up -d --build
+3. Для запуска проекта с помощью докера используйте команду docker-compose up -d --build
