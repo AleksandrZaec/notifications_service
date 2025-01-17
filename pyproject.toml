@@ -1,0 +1,43 @@
+[project]
+name = "notification-service"
+version = "0.1.0"
+description = "A Django project with DRF notification_service"
+authors = [
+    {name = "AleksandrZaec", email = "zaecam95@mail.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "django (>=4.2,<5.0)",
+    "django-celery-beat (>=2.7.0,<3.0.0)",
+    "djangorestframework (>=3.15.2,<4.0.0)",
+    "redis (>=5.2.1,<6.0.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "django-cors-headers (>=4.6.0,<5.0.0)",
+    "celery (>=5.4.0,<6.0.0)",
+    "drf-yasg (>=1.21.8,<2.0.0)",
+    "requests (>=2.32.3,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.14.1"
+flake8 = "^7.1.1"
+black = "^24.10.0"
+isort = "^5.13.2"
+pytest = "^8.3.4"
+pytest-django = "^4.9.0"
+pytest-cov = "^6.0.0"
+types-requests = "^2.32.0.20241016"
+
+[tool.mypy]
+files = "config, notifications"
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+warn_unused_ignores = true
+ignore_missing_imports = true

@@ -1,0 +1,22 @@
+SECRET_KEY=ваш-секретный-ключ-джанго
+
+POSTGRES_DB=имя-вашей-базы-данных
+POSTGRES_USER=имя-пользователя-базы-данных
+POSTGRES_PASSWORD=пароль-пользователя-базы-данных
+POSTGRES_HOST=хост-базы-данных
+POSTGRES_PORT=порт-базы-данных
+
+CELERY_BROKER_URL=адрес-брокера-celery
+CELERY_RESULT_BACKEND=адрес-результата-celery
+DEBUG=True  # или False
+
+EMAIL_HOST_USER=ваш-логин-емейл-сервера
+EMAIL_HOST_PASSWORD=ваш-пароль-емейл-сервера
+
+CORS_ALLOWED_ORIGINS=http://разрешённый-источник
+CSRF_TRUSTED_ORIGINS=http://доверенный-источник
+
+TELEGRAM_BOT_TOKEN=токен-вашего-бота-в-telegram
+
+NOTIFICATIONS_SUPERUSER=имя-суперпользователя
+NOTIFICATIONS_SUPERUSER_PASSWORD=пароль-суперпользователя
