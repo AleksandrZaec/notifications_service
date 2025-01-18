@@ -6,12 +6,17 @@ from typing import List
 
 class StrictListField(ListField):
     """Кастомное поле, которое проверяет, что это список строк."""
+
     def to_internal_value(self, data: List[str]) -> List[str]:
         if not isinstance(data, list):
             raise ValidationError("Поле должно быть списком.")
+
         for item in data:
             if not isinstance(item, str):
                 raise ValidationError(f"Элемент списка '{item}' должен быть строкой.")
+            if not item:
+                raise ValidationError(f"Элемент списка не может быть пустым или None.")
+
         return super().to_internal_value(data)
 
 
@@ -34,14 +39,4 @@ def validate_telegram(value: str) -> str:
     """Проверка, что это только цифры для Телеграма."""
     if not value.isdigit():
         raise ValidationError(f"Неверный формат получателя: {value}")
-    return value
-
-
-def validate_recipients_format(value: List[str]) -> List[str]:
-    """Проверка всех получателей на корректность формата (почта или Телеграм)."""
-    for recepient in value:
-        if '@' in recepient:
-            validate_email(recepient)
-        else:
-            validate_telegram(recepient)
     return value

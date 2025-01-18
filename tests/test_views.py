@@ -64,7 +64,7 @@ def test_create_notification(api_client: APIClient, notification_data: Dict[str,
 @patch('notifications.views.send_email_notifications_task.apply_async')
 @patch('notifications.views.send_telegram_notification_task.apply_async')
 def test_create_notification_with_task_call(
-    mock_send_email, mock_send_telegram, api_client: APIClient, create_notification_data_list: Dict[str, Any]
+        mock_send_email, mock_send_telegram, api_client: APIClient, create_notification_data_list: Dict[str, Any]
 ) -> None:
     """Тест успешного создания уведомления с вызовом задач."""
     url = '/api/notify/'
@@ -121,7 +121,7 @@ def test_create_notification_with_task_call(
     ],
 )
 def test_create_notification_invalid_data(
-    api_client: APIClient, invalid_data: Dict[str, Any], expected_error_field: str
+        api_client: APIClient, invalid_data: Dict[str, Any], expected_error_field: str
 ) -> None:
     """Тест с некорректными данными для разных вариантов поля `recepient`."""
     url = '/api/notify/'
