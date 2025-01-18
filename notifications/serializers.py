@@ -43,7 +43,7 @@ class CreateNotificationSerializer(serializers.Serializer):
                 elif isinstance(recipient, dict):
                     recipient_value = recipient.get("recipient", "")
                 else:
-                    raise ValidationError(f"Неподдерживаемый тип для получателя: {type(recipient)}")
+                    raise ValidationError
 
                 if '@' in recipient_value:
                     validate_email(recipient_value)
@@ -52,19 +52,12 @@ class CreateNotificationSerializer(serializers.Serializer):
                     validate_telegram(recipient_value)
                     recipient_type = "telegram"
 
-                valid_recipients.append({"recipient": recipient_value, "recipient_type": recipient_type})
+                valid_recipients.append({"recipient": recipient, "recipient_type": recipient_type})
             except ValidationError as e:
-
-                invalid_recipients.append({
-                    "recipient": recipient,
-                    "error": f"Неверный формат получателя: {recipient}"
-                })
+                invalid_recipients.append({"recipient": recipient, "error": "Некорректный получатель"})
 
         if invalid_recipients:
-            raise ValidationError({
-                "invalid_recipients": invalid_recipients,
-                "message": "Некоторые получатели некорректны."
-            })
+            raise ValidationError(invalid_recipients)
 
         return valid_recipients
 

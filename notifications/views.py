@@ -7,6 +7,7 @@ from notifications.serializers import CreateNotificationSerializer
 from notifications.tasks import send_email_notifications_task, send_telegram_notification_task
 from drf_yasg.utils import swagger_auto_schema
 from typing import Any, List
+from datetime import datetime
 
 
 class NotificationViewSet(viewsets.ViewSet):
@@ -19,6 +20,13 @@ class NotificationViewSet(viewsets.ViewSet):
         request_body=CreateNotificationSerializer,
         responses={201: 'Успех', 400: 'Ошибка'}
     )
+    def format_date(self, created_at: str) -> str:
+        """
+        Форматирует дату в более читабельный формат.
+        """
+        date_obj = datetime.fromisoformat(created_at[:-1])
+        return date_obj.strftime("%B %d, %Y at %I:%M %p")
+
     def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """
         Метод для создания уведомления.

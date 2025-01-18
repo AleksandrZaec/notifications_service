@@ -31,12 +31,12 @@ def validate_email(value: str) -> str:
     """Проверка на правильность формата email."""
     email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     if not re.match(email_regex, value):
-        raise ValidationError(f"Неверный формат получателя: {value}")
+        raise ValidationError
     return value
 
 
 def validate_telegram(value: str) -> str:
     """Проверка, что это только цифры для Телеграма."""
     if not value.isdigit():
-        raise ValidationError(f"Неверный формат получателя: {value}")
+        raise ValidationError
     return value
