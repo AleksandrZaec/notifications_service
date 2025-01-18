@@ -52,8 +52,8 @@ class CreateNotificationSerializer(serializers.Serializer):
                     validate_telegram(recipient_value)
                     recipient_type = "telegram"
 
-                valid_recipients.append({"recipient": recipient, "recipient_type": recipient_type})
-            except ValidationError as e:
+                valid_recipients.append({"recipient": recipient_value, "recipient_type": recipient_type})
+            except ValidationError:
                 invalid_recipients.append({"recipient": recipient, "error": "Некорректный получатель"})
 
         if invalid_recipients:
@@ -71,13 +71,15 @@ class CreateNotificationSerializer(serializers.Serializer):
 
         notification = Notification.objects.create(message=message, delay=delay)
 
-        Recipient.objects.bulk_create([
+        recipients_to_create = [
             Recipient(
                 notification=notification,
                 recepient=recepient["recipient"],
                 recepient_type=recepient["recipient_type"]
             )
             for recepient in prepared_recepients
-        ])
+        ]
+
+        Recipient.objects.bulk_create(recipients_to_create)
 
         return notification

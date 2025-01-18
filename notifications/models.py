@@ -81,14 +81,6 @@ class Recipient(models.Model):
 class NotificationSendLog(models.Model):
     """
     Модель для логирования попыток отправки уведомлений.
-
-    Поля:
-        - notification: связь с уведомлением, для которого делалась попытка отправки.
-        - recipient: адрес или ID получателя уведомления.
-        - recipient_type: тип получателя (email или telegram).
-        - status: статус отправки уведомления ('успешно' или 'ошибка').
-        - error_message: текст ошибки, если отправка не удалась.
-        - timestamp: время попытки отправки.
     """
 
     STATUS_CHOICES = [
