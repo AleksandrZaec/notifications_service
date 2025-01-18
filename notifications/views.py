@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from notifications.serializers import CreateNotificationSerializer
 from notifications.tasks import send_email_notifications_task, send_telegram_notification_task
+from drf_yasg.utils import swagger_auto_schema
 
 
 class NotificationViewSet(viewsets.ViewSet):
@@ -12,6 +13,10 @@ class NotificationViewSet(viewsets.ViewSet):
     """
     http_method_names = ['post']
 
+    @swagger_auto_schema(
+        request_body=CreateNotificationSerializer,
+        responses={201: 'Успех', 400: 'Ошибка'}
+    )
     def create(self, request, *args, **kwargs):
         serializer = CreateNotificationSerializer(data=request.data)
 
