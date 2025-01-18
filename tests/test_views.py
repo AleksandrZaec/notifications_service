@@ -2,16 +2,17 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 from unittest.mock import patch
+from typing import Dict, Any
 
 
 @pytest.fixture
-def api_client():
+def api_client() -> APIClient:
     """Фикстура для создания клиента API."""
     return APIClient()
 
 
 @pytest.fixture
-def create_notification_data_list():
+def create_notification_data_list() -> Dict[str, Any]:
     """Фикстура с данными, где `recepient` — список строк."""
     return {
         "message": "Test message",
@@ -21,11 +22,11 @@ def create_notification_data_list():
 
 
 @pytest.fixture
-def create_notification_data_string():
+def create_notification_data_string() -> Dict[str, Any]:
     """Фикстура с данными, где `recepient` — строка."""
     return {
         "message": "Test message",
-        "recepient": "test@test.com",  # Строка вместо списка
+        "recepient": "test@test.com",
         "delay": 0
     }
 
@@ -44,7 +45,7 @@ def create_notification_data_string():
         ),
     ],
 )
-def test_create_notification(api_client, notification_data):
+def test_create_notification(api_client: APIClient, notification_data: Dict[str, Any]) -> None:
     """Тест успешного создания уведомления для разных типов поля `recepient`."""
     url = '/api/notify/'
 
@@ -63,8 +64,8 @@ def test_create_notification(api_client, notification_data):
 @patch('notifications.views.send_email_notifications_task.apply_async')
 @patch('notifications.views.send_telegram_notification_task.apply_async')
 def test_create_notification_with_task_call(
-    mock_send_email, mock_send_telegram, api_client, create_notification_data_list
-):
+    mock_send_email, mock_send_telegram, api_client: APIClient, create_notification_data_list: Dict[str, Any]
+) -> None:
     """Тест успешного создания уведомления с вызовом задач."""
     url = '/api/notify/'
 
@@ -119,19 +120,19 @@ def test_create_notification_with_task_call(
         ),
     ],
 )
-def test_create_notification_invalid_data(api_client, invalid_data, expected_error_field):
+def test_create_notification_invalid_data(
+    api_client: APIClient, invalid_data: Dict[str, Any], expected_error_field: str
+) -> None:
     """Тест с некорректными данными для разных вариантов поля `recepient`."""
     url = '/api/notify/'
 
     response = api_client.post(url, data=invalid_data, format='json')
-    print(response.status_code)  # Печать статуса
-    print(response.data)  # Печать данных
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert expected_error_field in response.data
 
 
 @pytest.mark.django_db
-def test_create_notification_missing_field(api_client):
+def test_create_notification_missing_field(api_client: APIClient) -> None:
     """Тест с отсутствующим обязательным полем."""
     url = '/api/notify/'
 

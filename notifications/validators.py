@@ -1,12 +1,12 @@
 import re
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import ListField, CharField
+from rest_framework.fields import ListField
+from typing import List
 
 
 class StrictListField(ListField):
     """Кастомное поле, которое проверяет, что это список строк."""
-
-    def to_internal_value(self, data):
+    def to_internal_value(self, data: List[str]) -> List[str]:
         if not isinstance(data, list):
             raise ValidationError("Поле должно быть списком.")
         for item in data:
@@ -15,14 +15,14 @@ class StrictListField(ListField):
         return super().to_internal_value(data)
 
 
-def validate_unique_recipients(value):
+def validate_unique_recipients(value: List[str]) -> List[str]:
     """Проверка на уникальность значений в списке."""
     if len(value) != len(set(value)):
         raise ValidationError("Получатели должны быть уникальными.")
     return value
 
 
-def validate_email(value):
+def validate_email(value: str) -> str:
     """Проверка на правильность формата email."""
     email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     if not re.match(email_regex, value):
@@ -30,20 +30,16 @@ def validate_email(value):
     return value
 
 
-def validate_telegram(value):
+def validate_telegram(value: str) -> str:
     """Проверка, что это только цифры для Телеграма."""
     if not value.isdigit():
         raise ValidationError(f"Неверный формат получателя: {value}")
     return value
 
 
-def validate_recipients_format(value):
+def validate_recipients_format(value: List[str]) -> List[str]:
     """Проверка всех получателей на корректность формата (почта или Телеграм)."""
-    if not isinstance(value, list):
-        raise ValidationError("Поле 'recepient' должно быть списком строк.")
     for recepient in value:
-        if not isinstance(recepient, str):
-            raise ValidationError(f"Элемент списка '{recepient}' должен быть строкой.")
         if '@' in recepient:
             validate_email(recepient)
         else:

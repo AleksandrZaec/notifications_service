@@ -15,24 +15,24 @@ class Notification(models.Model):
         (2, '1 день'),
     ]
 
-    message = models.TextField(
+    message: str = models.TextField(
         max_length=1024,
         verbose_name="Сообщение",
         help_text="Текст уведомления, которое будет отправлено"
     )
-    delay = models.PositiveSmallIntegerField(
+    delay: int = models.PositiveSmallIntegerField(
         default=0,
         choices=DELAY_CHOICES,
         verbose_name="Задержка",
         help_text="Задержка перед отправкой уведомления"
     )
-    created_at = models.DateTimeField(
+    created_at: timezone.datetime = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Дата создания",
         help_text="Дата и время создания уведомления"
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Уведомление #{self.id} от {self.created_at}"
 
     class Meta:
@@ -52,25 +52,25 @@ class Recipient(models.Model):
         (TELEGRAM, "Telegram"),
     ]
 
-    notification = models.ForeignKey(
+    notification: Notification = models.ForeignKey(
         Notification,
         related_name='recipients',
         on_delete=models.CASCADE,
         verbose_name="Уведомление"
     )
-    recepient = models.CharField(
+    recepient: str = models.CharField(
         max_length=150,
         verbose_name="Получатель",
         help_text="Email или ID Telegram"
     )
-    recepient_type = models.CharField(
+    recepient_type: str = models.CharField(
         max_length=50,
         choices=RECEPIENT_TYPE_CHOICES,
         verbose_name="Тип получателя",
         help_text="Тип получателя (Email или Telegram)"
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Получатель {self.recepient} ({self.recepient_type}) для уведомления #{self.notification.id}"
 
     class Meta:
@@ -122,7 +122,7 @@ class NotificationSendLog(models.Model):
         verbose_name="Сообщение об ошибке",
         help_text="Текст ошибки, если отправка не удалась"
     )
-    timestamp: models.DateTimeField = models.DateTimeField(
+    timestamp: timezone.datetime = models.DateTimeField(
         default=timezone.now,
         verbose_name="Время попытки отправки",
         help_text="Дата и время попытки отправки уведомления"
